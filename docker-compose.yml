@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  auth-client:
+    image: pomerium/pomerium:latest
+    container_name: auth-client
+    restart: always
+    volumes:
+      - ./pomerium:/pomerium:ro
+    environment:
+      - AUTH_CLIENT_COOKIE_SECRET=${AUTH_CLIENT_COOKIE_SECRET}
+      - AUTH_CLIENT_SECRET=${AUTH_CLIENT_SECRET}
+    networks:
+      - external-sol-apis
+      - logging-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.auth-client.rule=HostRegexp(`{subdomain:[a-z0-9-]+}.thiagosol.com`)"
+      - "traefik.http.routers.auth-client.priority=1"
+      - "traefik.http.routers.auth-client.entrypoints=https"
+      - "traefik.http.routers.auth-client.tls=true"
+      - "traefik.http.services.auth-client.loadbalancer.server.port=80"
+      - "traefik.docker.network=external-sol-apis"
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://loki:3100/loki/api/v1/push"
+        loki-external-labels: "service=auth-client,type=service"
+        loki-retries: "5"
+        loki-batch-size: "400"
+        mode: "non-blocking"
+    deploy:
+      resources:
+        limits:
+          memory: 300M
+
+networks:
+  logging-network:
+    external: true
+  external-sol-apis:
+    external: true

@@ -1,0 +1,37 @@
+insecure_server: true
+
+authenticate_service_url: https://auth-client.thiagosol.com
+
+shared_secret: ${AUTH_CLIENT_COOKIE_SECRET}
+cookie_secret: ${AUTH_CLIENT_COOKIE_SECRET}
+
+idp_provider: oidc
+idp_provider_url: https://auth.thiagosol.com/realms/thiagosol.com
+idp_client_id: leilao-app
+idp_client_secret: ${AUTH_CLIENT_SECRET}
+idp_refresh_tokens: true
+
+address: 0.0.0.0:80
+
+routes:
+  - from: https://leilao.thiagosol.com
+    to: http://auction-api:8080
+    prefix: /api/
+    prefix_rewrite: /
+    policy:
+      - allow:
+          or:
+            - claim/groups: leilao-app-access
+    preserve_host_header: true
+    pass_identity_headers: true
+    set_request_headers:
+      Authorization: "Bearer ${pomerium.access_token}"
+
+  - from: https://leilao.thiagosol.com
+    to: http://leilao:80
+    policy:
+      - allow:
+          or:
+            - claim/groups: leilao-app-access
+    preserve_host_header: true
+    pass_identity_headers: true
