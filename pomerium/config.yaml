@@ -4,7 +4,7 @@ authenticate_service_url: https://auth-client.thiagosol.com
 
 idp_provider: oidc
 idp_provider_url: https://auth.thiagosol.com/realms/thiagosol.com
-idp_client_id: leilao-app
+idp_client_id: auth-client
 idp_refresh_tokens: true
 
 address: 0.0.0.0:80
