@@ -10,7 +10,7 @@ services:
     environment:
       - AUTH_CLIENT_COOKIE_SECRET=${AUTH_CLIENT_COOKIE_SECRET}
       - AUTH_CLIENT_SHARED_SECRET=${AUTH_CLIENT_COOKIE_SECRET}
-      - OIDC_CLIENT_SECRET=${AUTH_CLIENT_SECRET}
+      - IDP_CLIENT_SECRET=${AUTH_CLIENT_SECRET}
     networks:
       - external-sol-apis
       - logging-network
