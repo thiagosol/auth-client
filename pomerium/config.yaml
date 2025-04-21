@@ -5,7 +5,8 @@ authenticate_service_url: https://auth-client.thiagosol.com
 idp_provider: oidc
 idp_provider_url: https://auth.thiagosol.com/realms/thiagosol.com
 idp_client_id: auth-client
-idp_refresh_tokens: true
+
+signout_redirect_url: https://auth.thiagosol.com/realms/thiagosol.com/protocol/openid-connect/logout?client-id=auth-client&post_logout_redirect_uri=https://auth-client.thiagosol.com
 
 address: 0.0.0.0:80
 
